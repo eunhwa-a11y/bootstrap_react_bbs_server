@@ -1,6 +1,14 @@
+const cors = require("cors"); // 최상단에 있는 게 바람직
 const express = require("express");
 const app = express();
 const port = 8000;
+
+var corsOptions = {
+  // origin: 'http://localhost:3000/',
+  origin: "*", // 모든 출처 허용
+};
+
+app.use(cors(corsOptions));
 
 const mysql = require("mysql");
 const db = mysql.createConnection({
