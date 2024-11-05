@@ -93,6 +93,18 @@ app.post('/update', (req, res) => {
   })
 })
 
+app.post('/delete', (req, res) => {
+
+  // const boardIDList = req.body.boardIDList;
+  const {boardIDList} = req.body;
+
+  const sql = `DELETE FROM board WHERE BOARD_ID in (${boardIDList})`;
+  db.query(sql, (err,result) => {
+    if (err) throw err;
+    res.send(result);
+  })
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
