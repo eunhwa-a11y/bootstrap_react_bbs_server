@@ -52,6 +52,19 @@ app.get("/list", (req, res) => { // req : 요청 res : 반응
   });
 });
 
+app.get("/detail", (req, res) => { // req : 요청 res : 반응
+  const id = req.query.id;
+  // ↓ sql을 변수에 담아서 사용
+  const sql =
+  "SELECT BOARD_TITLE, BOARD_CONTENT FROM board WHERE BOARD_ID = ?";
+  
+  // query의 결과가 나오는 부분
+  db.query(sql, [id], (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
 app.post('/insert', (req, res) => {
   console.log(req.body.title);
   let title =req.body.title;
@@ -59,6 +72,23 @@ app.post('/insert', (req, res) => {
   /* const sql = "INSERT INTO board (BOARD_TITLE, BOARD_CONTENT, REGISTER_ID) VALUES (title, content, 'admin')"; */
   const sql = "INSERT INTO board (BOARD_TITLE, BOARD_CONTENT, REGISTER_ID) VALUES (?, ?, 'admin')";
   db.query(sql, [title, content], (err,result) => {
+    res.send(result);
+  })
+})
+
+app.post('/update', (req, res) => {
+  /*
+  console.log(req.body.title);
+  let title =req.body.title;
+  let content = req.body.content;
+  let id = req.body.id;
+  */
+  const {id, title, content} = req.body;
+
+  /* const sql = "UPDATE 테이블명 SET 컬럼=값, 컬럼=값 WHERE 컬럼명=값"; */
+  const sql = "UPDATE board SET BOARD_TITLE = ?, BOARD_CONTENT = ? WHERE BOARD_ID = ?";
+  db.query(sql, [title, content, id], (err,result) => {
+    if (err) throw err;
     res.send(result);
   })
 })
